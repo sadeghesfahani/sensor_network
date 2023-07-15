@@ -63,8 +63,11 @@ if [ ! -f /home/sadeghesfahani/sensor_network_cache/dependency.flag ]; then
   fi
   else
     echo "Reading from cache. Skipping dependency installation..." >>$LOGFILE
-
 fi
+
+# giving enough permissions
+sudo chown sadeghesfahani:sadeghesfahani /home/sadeghesfahani/sensor_network
+sudo chmod 755 /home/sadeghesfahani/sensor_network
 
 # Step 4: Run the Django Application with Gunicorn
 # We're running this in the background to continue the script

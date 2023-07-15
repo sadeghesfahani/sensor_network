@@ -27,9 +27,7 @@ else
     echo "Directory already exists: $directory"
 fi
 
-# giving enough permissions
-sudo chown sadeghesfahani:sadeghesfahani /home/sadeghesfahani/sensor_network
-sudo chmod 755 /home/sadeghesfahani/sensor_network
+
 
 # Execute the script
 sudo /home/sadeghesfahani/deploy.sh
