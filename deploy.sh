@@ -80,7 +80,7 @@ After=network.target
 
 [Service]
 User=sadeghesfahani
-Group=www-data
+Group=sadeghesfahani
 WorkingDirectory=/home/sadeghesfahani/sensor_network
 ExecStart=/home/sadeghesfahani/sensor_network/venv/bin/gunicorn \
           --access-logfile - \
