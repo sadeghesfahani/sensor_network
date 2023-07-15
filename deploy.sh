@@ -1,14 +1,16 @@
 #!/bin/bash
 
-# Exit on error
-set -e
+# Define log file
+logfile="automation.log"
+
 
 # Step 1: Update the system
 echo "Updating system..."
-sudo apt update
+sudo apt update 2>> $logfile
 
 # Step 2: Clone the Application Repository
-while true; do
+counter=0
+while [ $counter -lt 3 ]; do
   if [ -d "sensor_network" ]; then
     echo "sensor_network directory already exists. Removing..."
     rm -rf sensor_network
@@ -18,10 +20,15 @@ while true; do
     echo "Repository cloned successfully."
     break
   else
-    echo "Failed to clone the repository. Please check your credentials and try again."
-    continue
+    echo "Failed to clone the repository. Retrying..."
+    ((counter++))
   fi
 done
+
+if [ $counter -ge 3 ]; then
+  echo "Failed to clone the repository after 3 attempts. Please check the logs."
+  exit 1
+fi
 
 cd sensor_network
 
@@ -29,7 +36,23 @@ cd sensor_network
 echo "Setting up the virtual environment and installing dependencies..."
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+
+# Step 4: Install the Required Python Packages
+counter=0
+while [ $counter -lt 3 ]; do
+  if pip install -r requirements.txt 2>> $logfile; then
+    echo "Packages installed successfully."
+    break
+  else
+    echo "Failed to install packages. Retrying..."
+    ((counter++))
+  fi
+done
+
+if [ $counter -ge 3 ]; then
+  echo "Failed to install packages after 3 attempts. Please check the logs."
+  exit 1
+fi
 
 # Step 4: Run the Django Application with Gunicorn
 # We're running this in the background to continue the script

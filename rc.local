@@ -1,0 +1,30 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Wait for network availability
+while ! ping -c1 www.google.com > /dev/null 2>&1
+do
+    echo "Waiting for Internet - network interface might be down..."
+    sleep 1
+done
+
+# Download the script
+wget -O /home/sadeghesfahani/deploy.sh https://github.com/sadeghesfahani/sensor_network/blob/main/deploy.sh
+
+# Make the script executable
+chmod +x /home/sadeghesfahani/deploy.sh
+
+# Execute the script
+/home/sadeghesfahani/deploy.sh
+
+exit 0
