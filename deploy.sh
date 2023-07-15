@@ -9,7 +9,11 @@ sudo apt update
 
 # Step 2: Clone the Application Repository
 echo "Cloning the repository..."
-git clone https://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@github.com/sadeghesfahani/sensor_network
+if [ -d "sensor_network" ]; then
+    echo "sensor_network directory already exists. Removing..."
+    rm -rf sensor_network
+fi
+git clone https://github.com/sadeghesfahani/sensor_network
 cd sensor_network
 
 # Step 3: Set Up a Virtual Environment and Install Dependencies
