@@ -14,7 +14,7 @@ cd sensor_network
 
 # Step 3: Set Up a Virtual Environment and Install Dependencies
 echo "Setting up the virtual environment and installing dependencies..."
-python3 -m venv venv
+python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
