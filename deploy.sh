@@ -56,17 +56,43 @@ fi
 # Step 4: Run the Django Application with Gunicorn
 # We're running this in the background to continue the script
 echo "Running the Django Application with Gunicorn..." >> $LOGFILE
-gunicorn sensor_network.wsgi:application --bind 0.0.0.0:8000 &
+
+echo "Creating system service" >> $LOGFILE
+cat > /etc/systemd/system/gunicorn.service <<EOF
+# /etc/systemd/system/gunicorn.service
+
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=sadeghesfahani
+Group=www-data
+WorkingDirectory=/home/sadeghesfahani/sensor_network
+ExecStart=/home/sadeghesfahani/sensor_network/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/home/sadeghesfahani/sensor_network/sensor_network.sock \
+          sensor_network.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "Starting gunicorn service" >> $LOGFILE
+sudo systemctl start gunicorn
+echo "Enabling gunicorn service" >> $LOGFILE
+sudo systemctl enable gunicorn
 
 # Step 5: Install and Configure Nginx
 echo "Installing and configuring Nginx..." >> $LOGFILE
-sudo apt install nginx
+sudo apt install nginx -y
 sudo rm /etc/nginx/sites-available/default
 echo "server {
     listen 80 default_server;
 
     location / {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://0.0.0.0:8000;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
