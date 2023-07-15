@@ -63,6 +63,7 @@ if [ ! -f /home/sadeghesfahani/sensor_network_cache/dependency.flag ]; then
   fi
   else
     echo "Reading from cache. Skipping dependency installation..." >>$LOGFILE
+    source venv/bin/activate
 fi
 
 # Step 4: Run the Django Application with Gunicorn
