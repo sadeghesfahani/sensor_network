@@ -111,7 +111,8 @@ echo "server {
     listen 80 default_server;
 
     location / {
-        proxy_pass http://0.0.0.0:8000;
+        include proxy_params;
+        proxy_pass http://unix:/home/sadeghesfahani/sensor_network/sensor_network.sock;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
