@@ -4,8 +4,8 @@
 LOGFILE="/home/sadeghesfahani/setup.log"
 
 # Step 1: Update the system
-echo "Updating system..." >>$LOGFILE
-sudo apt update 2>>$LOGFILE
+#echo "Updating system..." >>$LOGFILE
+#sudo apt update 2>>$LOGFILE
 
 if [ ! -f /home/sadeghesfahani/sensor_network_cache/clone.flag ]; then
 
@@ -63,9 +63,9 @@ if [ ! -f /home/sadeghesfahani/sensor_network_cache/dependency.flag ]; then
   fi
   else
     echo "Reading from cache. Skipping dependency installation..." >>$LOGFILE
-    source venv/bin/activate
-fi
 
+fi
+source venv/bin/activate
 # Step 4: Run the Django Application with Gunicorn
 # We're running this in the background to continue the script
 echo "Running the Django Application with Gunicorn..." >>$LOGFILE
