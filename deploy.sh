@@ -15,7 +15,7 @@ while [ $counter -lt 3 ]; do
     rm -rf sensor_network
   fi
   echo "Cloning the repository..."
-  if git clone https://github.com/sadeghesfahani/sensor_network; then
+  if git clone https://github.com/sadeghesfahani/sensor_network >> "$LOGFILE" 2>&1; then
     echo "Repository cloned successfully." >>$LOGFILE
     break
   else
