@@ -42,7 +42,7 @@ if [ ! -f /home/sadeghesfahani/sensor_network_cache/dependency.flag ]; then
   # Step 3: Set Up a Virtual Environment and Install Dependencies
   echo "Setting up the virtual environment and installing dependencies..." >>$LOGFILE
   python -m venv venv
-#  source venv/bin/activate
+  source venv/bin/activate
 
   # Step 4: Install the Required Python Packages
   counter=0
@@ -65,7 +65,7 @@ if [ ! -f /home/sadeghesfahani/sensor_network_cache/dependency.flag ]; then
     echo "Reading from cache. Skipping dependency installation..." >>$LOGFILE
 
 fi
-source /home/sadeghesfahani/sensor_network/venv/bin/activate
+
 # Step 4: Run the Django Application with Gunicorn
 # We're running this in the background to continue the script
 echo "Running the Django Application with Gunicorn..." >>$LOGFILE
