@@ -65,6 +65,8 @@ After=network.target
 [Service]
 ExecStart=/home/sadeghesfahani/boot_script.sh
 User=sadeghesfahani
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+Environment="HOME=/home/sadeghesfahani"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +82,7 @@ systemctl enable boot_script.service
 rm -f /boot/firstrun.sh
 
 
-
+sudo chown sadeghesfahani:sadeghesfahani /home/sadeghesfahani
 
 sed -i 's| systemd.run.*||g' /boot/cmdline.txt
 exit 0

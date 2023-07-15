@@ -18,5 +18,14 @@ echo "Script downloaded." >> $LOGFILE
 # Make the script executable
 chmod +x /home/sadeghesfahani/deploy.sh
 
+directory="/home/sadeghesfahani/sensor_network_cache"
+
+if [ ! -d "$directory" ]; then
+    mkdir "$directory"
+    echo "Directory created: $directory"
+else
+    echo "Directory already exists: $directory"
+fi
+
 # Execute the script
-/home/sadeghesfahani/deploy.sh
+sudo /home/sadeghesfahani/deploy.sh
