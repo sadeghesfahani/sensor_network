@@ -8,12 +8,21 @@ echo "Updating system..."
 sudo apt update
 
 # Step 2: Clone the Application Repository
-echo "Cloning the repository..."
-if [ -d "sensor_network" ]; then
+while true; do
+  if [ -d "sensor_network" ]; then
     echo "sensor_network directory already exists. Removing..."
     rm -rf sensor_network
-fi
-git clone https://github.com/sadeghesfahani/sensor_network
+  fi
+  echo "Cloning the repository..."
+  if git clone https://github.com/sadeghesfahani/sensor_network; then
+    echo "Repository cloned successfully."
+    break
+  else
+    echo "Failed to clone the repository. Please check your credentials and try again."
+    continue
+  fi
+done
+
 cd sensor_network
 
 # Step 3: Set Up a Virtual Environment and Install Dependencies
