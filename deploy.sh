@@ -66,6 +66,7 @@ if [ ! -f /home/sadeghesfahani/sensor_network_cache/dependency.flag ]; then
 fi
 
 # giving enough permissions
+sudo chown sadeghesfahani:sadeghesfahani /home/sadeghesfahani
 sudo chown sadeghesfahani:sadeghesfahani /home/sadeghesfahani/sensor_network
 sudo chmod 755 /home/sadeghesfahani/sensor_network
 
@@ -114,12 +115,14 @@ sudo rm /etc/nginx/sites-available/default
 echo "server {
     listen 80 default_server;
 
+    # Serve static files directly
+    location /static/ {
+      alias /home/sadeghesfahani/sensor_network/static/;
+    }
+
     location / {
         include proxy_params;
         proxy_pass http://unix:/home/sadeghesfahani/sensor_network/sensor_network.sock;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     }
 }" | sudo tee /etc/nginx/sites-available/default
 sudo nginx -t
@@ -135,8 +138,12 @@ python manage.py makemigrations
 python manage.py migrate
 echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell
 
+sudo chown sadeghesfahani:sadeghesfahani /home/sadeghesfahani/sensor_network/db.sqlite3
+sudo chmod 755 /home/sadeghesfahani/sensor_network/db.sqlite3
 # Step 7: Seed the Django Database
 echo "Seeding the Django Database..." >>$LOGFILE
 python manage.py loaddata seed/data.json
+
+python manage.py collectstatic --noinput
 
 echo "Deployment complete!" >>$LOGFILE
